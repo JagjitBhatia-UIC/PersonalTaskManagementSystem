@@ -50,8 +50,7 @@ public class PersonalTaskManagementSystem
                 //Search for task 'name'; assumes no duplicates in name
                 for(int i = 0; i<tasks.length; i++)
                 {
-                    System.out.println(i);
-                    if((tasks[i].getName()).equals(name)){
+                   if((tasks[i].getName()).equals(name)){
                         t = tasks[i];  //If task found, set task t to equal that task
                         break;
                     }
@@ -79,7 +78,7 @@ public class PersonalTaskManagementSystem
                 {
                     ratingTotal += tasks[i].getRating(); 
                 }
-                int totalPoints = tasks.length * 10;  //Since all ratings are out of 10, total # of possible points is 10 * (number of tasks)
+                int totalPoints = count * 10;  //Since all ratings are out of 10, total # of possible points is 10 * (number of tasks)
                 int percent = (ratingTotal/totalPoints) * 100;  //Compute score and convert into percentage
                 String grade = "N/A";  //Initialize grade.
                 //Determine grade based on percentage. Standard grading scale used. 
