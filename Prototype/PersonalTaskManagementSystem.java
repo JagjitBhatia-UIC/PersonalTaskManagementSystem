@@ -80,6 +80,11 @@ public class PersonalTaskManagementSystem {
                     else if (command.equals("end day")) {
                         int ratingTotal = 0;  //User's total score is initialized
                         //Sum ratings of all tasks
+                        if(count.getCounter() == 0)
+                        {
+                            System.out.println("No tasks created.");
+                            System.exit(0);
+                        }
                         for (int i = 0; i < count.getCounter(); i++) {
                             ratingTotal += tasks[i].getRating();
                         }
@@ -101,7 +106,7 @@ public class PersonalTaskManagementSystem {
 
                 }
 
-
+                System.exit(0);
             }
         };
 
@@ -125,7 +130,7 @@ public class PersonalTaskManagementSystem {
                         if ((LocalTime.now().getHour() == tasks[taskQueue].getTime().getHour()) && (Math.abs(LocalTime.now().getMinute() - tasks[taskQueue].getTime().getMinute()) == 0)) {
                             System.out.println("It's time for task '" + tasks[taskQueue].getName() + "' !");
                             try {
-                                Thread.sleep(100000);
+                                Thread.sleep(60000);
                             } catch (Exception e) {
                                 System.out.println("Interrupted");
                             }
