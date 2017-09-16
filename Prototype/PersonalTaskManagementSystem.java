@@ -78,7 +78,7 @@ public class PersonalTaskManagementSystem {
 
                     //end task function
                     else if (command.equals("end day")) {
-                        int ratingTotal = 0;  //User's total score is initialized
+                        double ratingTotal = 0;  //User's total score is initialized
                         //Sum ratings of all tasks
                         if(count.getCounter() == 0)
                         {
@@ -88,8 +88,8 @@ public class PersonalTaskManagementSystem {
                         for (int i = 0; i < count.getCounter(); i++) {
                             ratingTotal += tasks[i].getRating();
                         }
-                        int totalPoints = count.getCounter() * 10;  //Since all ratings are out of 10, total # of possible points is 10 * (number of tasks)
-                        int percent = (ratingTotal / totalPoints) * 100;  //Compute score and convert into percentage
+                        double totalPoints = count.getCounter() * 10;  //Since all ratings are out of 10, total # of possible points is 10 * (number of tasks)
+                        double percent = (ratingTotal / totalPoints) * 100;  //Compute score and convert into percentage
                         String grade = "N/A";  //Initialize grade.
                         //Determine grade based on percentage. Standard grading scale used.
                         if ((percent >= 0) && (percent <= 59)) grade = "F";
