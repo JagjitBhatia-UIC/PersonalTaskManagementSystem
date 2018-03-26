@@ -13,14 +13,84 @@
 
 
 //Import scanner utility and time package
+
+//import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.time.*;
+
+
 
 public class PersonalTaskManagementSystem {
     //Main method
     public static void main(String[] args) {
+        int counter = 0;
+        File yourFile = new File("tasks.csv");
+        try
+        {
+            yourFile.createNewFile(); // if file already exists will do nothing
+            FileOutputStream oFile = new FileOutputStream(yourFile, false);
+        }
+
+        catch (Exception e)
+        {
+            //do nothing
+        }
+
+
         //Initialize array of tasks (maximum 12), Scanner, and TaskCounter
         Task[] tasks = new Task[12];
+
+        try
+        {
+
+            BufferedReader br = new BufferedReader(new FileReader("tasks.csv"));
+            String line = br.readLine();
+
+            while(line != null && counter < 12){
+                int id = 0;
+                String name = "";
+                LocalTime time = LocalTime.MIDNIGHT;
+                int count = 0;
+                try{
+
+
+                    //goes up to 2 (changed from 3...may cause error)
+                    for(int i = 0; i<line.length(); i++){
+                        int j = i+1;
+                        String input = line.substring(i,j);
+                        if(input.equals(",")) count++;
+                        else if(count == 0) id = Integer.parseInt(input);
+                        else if(count == 1) name = input;
+                        else if(count == 2) time = LocalTime.parse(input);
+                    }
+                    line = br.readLine();
+                }
+                catch(Exception e){
+                    break;
+                }
+                tasks[counter] = new Task(id, name, time);
+                counter++;
+            }
+
+            if(counter == 12) System.out.println("task limit reached.");
+
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Information cannot be retrieved.");
+        }
+
+
+
+
+
+
         Scanner sc = new Scanner(System.in);
         TaskCounter count = new TaskCounter();
 
@@ -46,9 +116,24 @@ public class PersonalTaskManagementSystem {
                         String t = sc.nextLine();
                         int id = count.getCounter();
                         LocalTime time = LocalTime.parse(t);    //User enters time in as a string (must be in hh:mm format); parsed into LocalTime
-                        tasks[count.getCounter()] = new Task(id, name, time);    //Task number (count + 1) created (See Task class for reference)
-                        System.out.println("task " + name + " created.");    //Confirmation to user
-                        count.increment();    //Increment task counter
+                        if(count.getCounter() < 12) {
+                            tasks[count.getCounter()] = new Task(id, name, time);    //Task number (count + 1) created (See Task class for reference)
+                            try {
+                                FileWriter fw = new FileWriter("tasks.csv");
+                                fw.append(Integer.toString(id));
+                                fw.append(',');
+                                fw.append(name);
+                                fw.append(',');
+                                fw.append(time.toString());
+                                fw.append('\n');
+
+                            } catch (Exception e) {
+                                System.out.println("Task Information cannot be stored. Exiting program will result in a loss of information.");
+                            }
+                            System.out.println("task " + name + " created.");    //Confirmation to user
+                            count.increment();    //Increment task counter
+                        }
+                        else System.out.println("task limit reached");
                     }
 
                     //'complete task' function
